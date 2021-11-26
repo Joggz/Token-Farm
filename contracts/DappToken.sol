@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract DaiToken {
+contract DappToken {
     string  public name = "Mock DAP Token";
     string  public symbol = "mDAPP";
     uint256 public totalSupply = 1000000000000000000000000; // 1 million tokens

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./MockDai.sol";
-import "./MockDappToken.sol";
+import "./DaiToken.sol";
+import "./DappToken.sol";
 
 contract TokenFarm {
     string public name = "Dapp Token Farm";

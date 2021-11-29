@@ -37,5 +37,18 @@ contract("Token Farm", ([owner, investor]) => {
         assert.equal(symbol, "mDAPP");
       });
     });
+
+    describe("Farm Tokens", async () => {
+      it("should reward investor for staking mDai Token", async () => {
+        let result;
+
+        result = await daiToken.balanceOf(investor);
+        assert.equal(
+          result,
+          tokens("100"),
+          "investor mDai Balance should be correct before Staking"
+        );
+      });
+    });
   });
 });

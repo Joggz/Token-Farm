@@ -54,6 +54,12 @@ contract("Token Farm", ([owner, investor]) => {
           from: investor,
         });
         await tokenFarm.stakeToken(tokens("100"), { from: investor });
+
+        await tokenFarm.issueToken({ from: owner });
+        result = await dappToken.balanceOf(investor);
+
+        assert.equal(result, tokens("100"), "Token sent to investor");
+        await tokenFarm.issueToken({ from: investor }).should.be.rejected;
       });
     });
   });

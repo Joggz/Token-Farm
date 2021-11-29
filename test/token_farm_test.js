@@ -41,13 +41,19 @@ contract("Token Farm", ([owner, investor]) => {
     describe("Farm Tokens", async () => {
       it("should reward investor for staking mDai Token", async () => {
         let result;
-
+        // check investor balance before Staking
         result = await daiToken.balanceOf(investor);
         assert.equal(
           result,
           tokens("100"),
           "investor mDai Balance should be correct before Staking"
         );
+
+        // stake daiToken
+        await daiToken.approve(tokenFarm.address, tokens("100"), {
+          from: investor,
+        });
+        await tokenFarm.stakeToken(tokens("100"), { from: investor });
       });
     });
   });

@@ -20,6 +20,7 @@ contract TokenFarm {
     }
 
     function stakeToken(uint _amount) public {
+        require(_amount > 0, 'amount should be greater than 0');
         daiToken.transferFrom(msg.sender, address(this), _amount);
 
         stakingBalance[msg.sender] = stakingBalance[msg.sender] + _amount;

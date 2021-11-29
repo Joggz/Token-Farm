@@ -54,6 +54,21 @@ contract("Token Farm", ([owner, investor]) => {
           from: investor,
         });
         await tokenFarm.stakeToken(tokens("100"), { from: investor });
+
+        // check stacked balance
+        result = await daiToken.balanceOf(investor);
+        assert.equal(
+          result,
+          tokens("0"),
+          "investor mDai Balance should be correct after Staking"
+        );
+
+        result = await daiToken.balanceOf(tokenFarm);
+        assert.equal(
+          result,
+          tokens("100"),
+          "Token Farm Balance after investor stakes"
+        );
       });
     });
   });

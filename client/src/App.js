@@ -9,6 +9,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import View from "./views";
 import { loadWeb3 } from "./Web3helpers";
+import Main from "./components/Main";
 
 const App = () => {
   const [state, setState] = useState({
@@ -65,7 +66,7 @@ const App = () => {
 
       let dappTokenBalance = await dappToken.methods.balanceOf(accoun).call();
 
-      obj["dappTokenBalance"] = dappTokenBalance;
+      obj["dappTokenBalance"] = dappTokenBalance.toString();
     } else {
       window.alert("DaiToken was not deployed to this detected network");
     }
@@ -80,46 +81,37 @@ const App = () => {
 
       let tokenFarmBalance = await tokenFarm.methods.balanceOf(accoun).call();
 
-      obj["tokenFarmBalance"] = tokenFarmBalance;
+      obj["tokenFarmBalance"] = tokenFarmBalance.toString();
     } else {
       window.alert("DaiToken was not deployed to this detected network");
     }
 
-    setState({ ...obj });
+    setState({ ...obj, loading: false });
   };
+
+  const stakeTokens = () => {};
+  const unStakeTokens = () => {};
 
   useEffect(() => {
     loadWeb3AndGetBlockChainData();
-    // try {
-    //   // Get network provider and web3 instance.
-    //   const web3 = await getWeb3();
-
-    //   // Use web3 to get the user's daiTokens.
-    //   const accounts = await web3.eth.getAccounts();
-
-    //   // Get the contract instance.
-    //   const networkId = await web3.eth.net.getId();
-    //   const deployedNetwork = TokenFarmContract.networks[networkId];
-    //   const instance = new web3.eth.Contract(
-    //     TokenFarmContract.abi,
-    //     deployedNetwork && deployedNetwork.address
-    //   );
-
-    //   setState({ web3, accounts, contract: instance });
-    // } catch (error) {
-    //   // Catch any errors for any of the above operations.
-    //   alert(
-    //     `Failed to load web3, accounts, or contract. Check console for details.`
-    //   );
-    //   console.error(error);
-    // }
   }, []);
-
   console.log(state);
   return (
     <div>
-      {!state.web3 && <div>Loading Web3, accounts, and contract...</div>}
+      {/* {!state.web3 && <div>Loading Web3, accounts, and contract...</div>} */}
       <Navbar account={state.account} />
+      <section>{state.loading && "Loading"}</section>
+      <section>
+        {!state.loading && (
+          <Main
+            daiTokenBalance={state.daiTokenBalance}
+            dappTokenBalance={state.dappTokenBalance}
+            stakingBalance={state.tokenFarmBalance}
+            stakeTokens={stakeTokens}
+            unStakeTokens={unStakeTokens}
+          />
+        )}
+      </section>
     </div>
   );
 };

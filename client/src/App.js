@@ -1,13 +1,10 @@
 import React, { Component, useEffect, useState } from "react";
-// import SimpleStorageContract from "./contracts/SimpleStorage.json";
-import TokenFarmContract from "./contracts/TokenFarm.json";
-import getWeb3 from "./getWeb3";
 import DaiToken from "./contracts/DaiToken.json";
 import DappToken from "./contracts/DappToken.json";
 import TokenFarm from "./contracts/TokenFarm.json";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import View from "./views";
+
 import { loadWeb3 } from "./Web3helpers";
 import Main from "./components/Main";
 
@@ -108,7 +105,7 @@ const App = () => {
             dappTokenBalance={state.dappTokenBalance}
             stakingBalance={state.tokenFarmBalance}
             stakeTokens={stakeTokens}
-            unStakeTokens={unStakeTokens}
+            unstakeTokens={unStakeTokens}
           />
         )}
       </section>

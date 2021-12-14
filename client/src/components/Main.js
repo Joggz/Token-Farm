@@ -8,14 +8,13 @@ const Main = ({
   stakeTokens,
   unstakeTokens,
 }) => {
-  const [amount, setAmount] = useState(0);
+  const [_amount, setAmount] = useState(0);
 
-  const shouldStake = (event) => {
+  const shouldStake = async (event) => {
     event.preventDefault();
 
-    amount = window.web3.utils.toWei(amount, "Ether");
-    // stakeTokens(amount);
-    alert(amount);
+    let amount = window.web3.utils.toWei(_amount, "Ether");
+    await stakeTokens(amount);
   };
   const updateAmount = (e) => {
     setAmount(e.target.value);
@@ -59,7 +58,10 @@ const Main = ({
                   placeholder="1000"
                   required
                 />
-                <button className="input-group-append btn-primary">
+                <button
+                  type="button"
+                  className="input-group-append btn-primary"
+                >
                   <div className="input-group-text">
                     <img src={dai} height="32" alt="" />
                     &nbsp;&nbsp;&nbsp; mDAI

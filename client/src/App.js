@@ -44,7 +44,7 @@ const App = () => {
         daiTokenData.address
       );
 
-      obj["daiToken"] = daiTokenData;
+      obj["daiToken"] = daiToken;
 
       let daiTokenBalance = await daiToken.methods.balanceOf(accoun).call();
 
@@ -59,7 +59,7 @@ const App = () => {
         dappTokenData.address
       );
 
-      obj["dappToken"] = dappTokenData;
+      obj["dappToken"] = dappToken;
 
       let dappTokenBalance = await dappToken.methods.balanceOf(accoun).call();
 
@@ -70,13 +70,16 @@ const App = () => {
 
     if (tokenFarmData) {
       const tokenFarm = new web3.eth.Contract(
-        DappToken.abi,
-        dappTokenData.address
+        TokenFarm.abi,
+        tokenFarmData.address
       );
 
-      obj["tokenFarm"] = tokenFarmData;
+      obj["tokenFarm"] = tokenFarm;
+      console.log(tokenFarm, tokenFarmData);
 
-      let tokenFarmBalance = await tokenFarm.methods.balanceOf(accoun).call();
+      let tokenFarmBalance = await tokenFarm.methods
+        .stakingBalance(accoun)
+        .call();
 
       obj["tokenFarmBalance"] = tokenFarmBalance.toString();
     } else {
@@ -86,16 +89,44 @@ const App = () => {
     setState({ ...obj, loading: false });
   };
 
-  const stakeTokens = () => {};
-  const unStakeTokens = () => {};
+  console.log(state);
+  const stakeTokens = (amount) => {
+    setState({ ...state, loading: true });
+    state.daiToken.methods
+      .approve(state.tokenFarm._address, amount)
+      .send({ from: state.account })
+      .on("transactionHash", (hash) => {
+        state.tokenFarm.methods
+          .stakeToken(amount)
+          .send({ from: state.account })
+          .on("transactionHash", async (hash) => {
+            setState({ ...state, loading: false });
+            // new web3.eth.getBalance(daiToken.address);
+            // let newBalance = await state.daiToken.methods
+            //   .balanceOf(state.accoun)
+            //   .call();
+
+            // console.log(newBalance);
+          });
+      });
+    // window.location.reload();
+  };
+  const unStakeTokens = () => {
+    setState({ ...state, loading: true });
+    state.tokenFarm.methods
+      .unstakeToken()
+      .send({ from: state.account })
+      .on("transactionHash", (hash) => setState({ ...state, loading: false }));
+  };
 
   useEffect(() => {
     loadWeb3AndGetBlockChainData();
   }, []);
-  console.log(state);
+
   return (
     <div>
       {/* {!state.web3 && <div>Loading Web3, accounts, and contract...</div>} */}
+
       <Navbar account={state.account} />
       <section>{state.loading && "Loading"}</section>
       <section>

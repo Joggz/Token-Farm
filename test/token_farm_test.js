@@ -26,7 +26,7 @@ contract("Token Farm", ([owner, investor]) => {
       const balance = await daiToken.balanceOf(owner);
 
       assert.equal(name, "Mock DAI Token");
-      // assert.equal(web3.utils.fromWei(balance), "1000000");
+      assert.equal(web3.utils.fromWei(balance), "1000000");
     });
 
     describe("Mock DApp Deployment", async () => {
@@ -53,13 +53,13 @@ contract("Token Farm", ([owner, investor]) => {
         await daiToken.approve(tokenFarm.address, tokens("100"), {
           from: investor,
         });
-        await tokenFarm.stakeToken(tokens("100"), { from: investor });
+        await tokenFarm.stakeToken(tokens("1 0"), { from: investor });
 
         await tokenFarm.issueToken({ from: owner });
         result = await dappToken.balanceOf(investor);
 
         assert.equal(result, tokens("100"), "Token sent to investor");
-        await tokenFarm.issueToken({ from: investor }).should.be.rejected;
+        // await tokenFarm.issueToken({ from: investor }).should.be.rejected;
       });
     });
   });
